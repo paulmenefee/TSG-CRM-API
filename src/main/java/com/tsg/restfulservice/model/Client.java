@@ -1,24 +1,24 @@
 package com.tsg.restfulservice.model;
 
 public class Client {
-    int id;
-    String companyName;
-    String address;
-    String city;
-    String state;
-    String zip;
-    String contactFirstName;
-    String contactLastName;
-    String contactEmail;
-    String contactPhone;
+    private int clientId;
+    private String companyName;
+    private String address;
+    private String city;
+    private String state;
+    private String zip;
+    private String contactFirstName;
+    private String contactLastName;
+    private String contactEmail;
+    private String contactPhone;
 
 
-    public int getId() {
-        return id;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getCompanyName() {

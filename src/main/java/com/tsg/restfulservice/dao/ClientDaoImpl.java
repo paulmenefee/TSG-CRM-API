@@ -1,11 +1,9 @@
 package com.tsg.restfulservice.dao;
 
 import com.tsg.restfulservice.model.Client;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -50,7 +48,7 @@ public class ClientDaoImpl implements ClientDAO {
         @Override
         public Client mapRow(ResultSet rs, int index) throws SQLException {
             Client client = new Client();
-            client.setId(rs.getInt("ClientId"));
+            client.setClientId(rs.getInt("ClientId"));
             client.setCompanyName(rs.getString("ClientName"));
             client.setAddress(rs.getString("ClientAddress"));
             client.setCity(rs.getString("clientCity"));
