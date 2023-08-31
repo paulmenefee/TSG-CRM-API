@@ -3,6 +3,7 @@ package com.tsg.restfulservice.controller;
 import com.tsg.restfulservice.model.Client;
 import com.tsg.restfulservice.dao.ClientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/tsg")
 @CrossOrigin
 public class ClientController {
 
     @Autowired
     public ClientDAO clientDAO;
+
+    public ClientController(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
+    }
 
     @GetMapping("/clients")
     public ResponseEntity<List<Client>> getClients(){
@@ -24,4 +29,25 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body(clientList);
     }
 
+    @GetMapping("/client/{id}")
+    public ResponseEntity<Client> getClientById(@PathVariable int id) {
+        try {
+            Client client = clientDAO.getClientById(id);
+            return new ResponseEntity(client, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/client")
+    public ResponseEntity<String> addClient(@RequestBody Client client) {
+        clientDAO.addClient(client);
+        return ResponseEntity.status(HttpStatus.CREATED).body("New Client: " + client.getClientId() + " added");
+    }
+
+    @DeleteMapping("/client/{id}")
+    public ResponseEntity<String> removeClient(@PathVariable int id) {
+        clientDAO.deleteClientById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Client: " + id + " deleted");
+    }
 }
