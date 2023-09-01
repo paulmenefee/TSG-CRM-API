@@ -50,4 +50,10 @@ public class ClientController {
         clientDAO.deleteClientById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Client: " + id + " deleted");
     }
+
+    @PutMapping("/client/{id}")
+    public ResponseEntity<Client> updateClient(@PathVariable int id, @RequestBody Client client) {
+        Client updatedClient = clientDAO.updateClientById(id, client);
+        return new ResponseEntity(updatedClient, HttpStatus.OK);
+    }
 }

@@ -63,14 +63,31 @@ public class ClientDaoImpl implements ClientDAO {
     }
 
     @Override
-    public Client updateClientById(int id, Client client) {
-        return null;
-    }
-
-    @Override
     public void deleteClientById(int id) {
         String sql = "DELETE FROM Client where clientId = ?";
         jdbcTemplate.update(sql, id);
+    }
+
+    @Override
+    public Client updateClientById(int id, Client client) {
+        String sql = "Update Client set ClientId = ?, " +
+                "ClientName = ?, " +
+                "ClientAddress = ?, " +
+                "ClientCity = ?, " +
+                "ClientState = ?, " +
+                "ClientZip = ?, " +
+                "ClientContactFirstName = ?, " +
+                "ClientContactLastName = ?, " +
+                "ClientContactEmail = ?, " +
+                "ClientContactPhone = ? " +
+                "Where clientId = ?";
+        jdbcTemplate.update(sql, client.getClientId(), client.getCompanyName(),
+                client.getAddress(), client.getCity(),
+                client.getState(), client.getZip(),
+                client.getContactFirstName(), client.getContactLastName(),
+                client.getContactEmail(), client.getContactPhone(),
+                client.getClientId());
+        return client;
     }
 
     public class ClientMapper implements RowMapper<Client> {
