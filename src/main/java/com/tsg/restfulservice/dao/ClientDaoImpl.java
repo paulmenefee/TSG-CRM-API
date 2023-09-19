@@ -70,7 +70,7 @@ public class ClientDaoImpl implements ClientDAO {
 
     @Override
     public Client updateClientById(int id, Client client) {
-        String sql = "Update Client set " +
+        String sql = "Update Client set ClientId = ?, " +
                 "ClientName = ?, " +
                 "ClientAddress = ?, " +
                 "ClientCity = ?, " +
@@ -81,7 +81,7 @@ public class ClientDaoImpl implements ClientDAO {
                 "ClientContactEmail = ?, " +
                 "ClientContactPhone = ? " +
                 "Where clientId = ?";
-        jdbcTemplate.update(sql, client.getCompanyName(),
+        jdbcTemplate.update(sql, client.getClientId(), client.getCompanyName(),
                 client.getAddress(), client.getCity(),
                 client.getState(), client.getZip(),
                 client.getContactFirstName(), client.getContactLastName(),

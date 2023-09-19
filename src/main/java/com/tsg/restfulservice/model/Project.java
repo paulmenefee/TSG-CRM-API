@@ -1,13 +1,13 @@
 package com.tsg.restfulservice.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Project {
     private String projectId;
     private String projectName;
     private int clientId;
     private String Summary;
-    private Date dueDate;
+    private LocalDate dueDate;
     private boolean isActive;
 
     public String getProjectId() {
@@ -42,11 +42,11 @@ public class Project {
         Summary = summary;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -56,5 +56,12 @@ public class Project {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Project CheckProjectID(Project project) {
+        String projectId = project.getProjectId();
+        String updatedString = projectId.replaceAll("[ /]", "-");
+        project.setProjectId(updatedString);
+        return project;
     }
 }

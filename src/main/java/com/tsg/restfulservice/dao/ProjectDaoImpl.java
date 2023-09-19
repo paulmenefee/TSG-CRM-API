@@ -3,11 +3,9 @@ package com.tsg.restfulservice.dao;
 import com.tsg.restfulservice.model.Project;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDAO {
@@ -20,14 +18,19 @@ public class ProjectDaoImpl implements ProjectDAO {
 
     @Override
     public Project addProject(Project project) {
+        // ProjectId must NOT contain any spaces.
+        System.out.println("Date " + project.getDueDate());
+
+        Project checkedProject = project.CheckProjectID(project);
         String sql = "insert into " +
                 "Project(ProjectId, ProjectName, ClientId, ProjectSummary, ProjectDueDate, ProjectIsActive) " +
                 "Values(?,?,?,?,?,?)";
 
-        jdbcTemplate.update(sql, project.getProjectId(), project.getProjectName(),
-            project.getClientId(), project.getSummary(),
-            project.getDueDate(), project.isActive());
-        return project;
+        jdbcTemplate.update(sql, checkedProject.getProjectId(), checkedProject.getProjectName(),
+                checkedProject.getClientId(), checkedProject.getSummary(),
+                checkedProject.getDueDate(), checkedProject.isActive());
+        System.out.println("Date " + checkedProject.getDueDate());
+        return checkedProject;
     }
 
     @Override
@@ -46,21 +49,22 @@ public class ProjectDaoImpl implements ProjectDAO {
 
     @Override
     public Project updateProjectById(String id, Project project) {
-        String sql = "update project set ProjectName = ? " +
+        String sql = "update project set ProjectId = ?, ProjectName = ?, " +
                 "ClientId = ?, " +
                 "ProjectSummary = ?, " +
                 "ProjectDueDate = ?, " +
                 "ProjectIsActive = ? " +
-                "where ProjectId = ?";
-        jdbcTemplate.update(sql, project.getProjectName(),
-                project.getClientId(), project.getSummary(),
-                project.getDueDate(), project.isActive());
+                "where ProjectId = ? ";
+        jdbcTemplate.update(sql, project.getProjectId(),
+                project.getProjectName(), project.getClientId(),
+                project.getSummary(), project.getDueDate(),
+                project.isActive(), project.getProjectId());
         return project;
     }
 
     @Override
     public void deleteProjectById(String id) {
-        String sql = "Delete from project where projectId == ?";
+        String sql = "Delete from project where projectId = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -73,7 +77,7 @@ public class ProjectDaoImpl implements ProjectDAO {
             project.setProjectName(rs.getString("ProjectName"));
             project.setClientId(rs.getInt("ClientId"));
             project.setSummary(rs.getString("ProjectSummary"));
-            project.setDueDate(rs.getDate("ProjectDueDate"));
+            project.setDueDate(rs.getDate("ProjectDueDate").toLocalDate());
             project.setActive(rs.getBoolean("ProjectIsActive"));
             return project;
         }
