@@ -1,12 +1,12 @@
 package com.tsg.restfulservice.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Task {
     private int taskId;
     private String taskTitle;
     private String taskDetails;
-    private Date taskDueDate;
+    private LocalDate taskDueDate;
     private float taskEstimatedHours;
     private String projectId;
     private int workerId;
@@ -38,11 +38,11 @@ public class Task {
         this.taskDetails = taskDetails;
     }
 
-    public Date getTaskDueDate() {
+    public LocalDate getTaskDueDate() {
         return taskDueDate;
     }
 
-    public void setTaskDueDate(Date taskDueDate) {
+    public void setTaskDueDate(LocalDate taskDueDate) {
         this.taskDueDate = taskDueDate;
     }
 

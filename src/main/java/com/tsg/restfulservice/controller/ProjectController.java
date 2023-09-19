@@ -31,9 +31,9 @@ public class ProjectController {
     public ResponseEntity<Project> getProjectById(@PathVariable String id) {
         Project project = projectDAO.getProjectById(id);
         if(project != null) {
-            return new ResponseEntity<>(project, HttpStatus.OK);
+            return new ResponseEntity(project, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -58,5 +58,4 @@ public class ProjectController {
         Project updatedProject = projectDAO.updateProjectById(id, project);
         return new ResponseEntity(updatedProject, HttpStatus.OK);
     }
-
 }
