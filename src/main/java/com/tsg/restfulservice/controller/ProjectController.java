@@ -49,7 +49,14 @@ public class ProjectController {
 
     @DeleteMapping("/project/{id}")
     public ResponseEntity<String> deleteProject(@PathVariable String id) {
-        return null;
+        projectDAO.deleteProjectById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Project: " + id + " deleted");
+    }
+
+    @PutMapping("/project/{id}")
+    public ResponseEntity<Project> updateProject(@PathVariable String id, @RequestBody Project project) {
+        Project updatedProject = projectDAO.updateProjectById(id, project);
+        return new ResponseEntity(updatedProject, HttpStatus.OK);
     }
 
 }

@@ -46,12 +46,22 @@ public class ProjectDaoImpl implements ProjectDAO {
 
     @Override
     public Project updateProjectById(String id, Project project) {
-        return null;
+        String sql = "update project set ProjectName = ? " +
+                "ClientId = ?, " +
+                "ProjectSummary = ?, " +
+                "ProjectDueDate = ?, " +
+                "ProjectIsActive = ? " +
+                "where ProjectId = ?";
+        jdbcTemplate.update(sql, project.getProjectName(),
+                project.getClientId(), project.getSummary(),
+                project.getDueDate(), project.isActive());
+        return project;
     }
 
     @Override
     public void deleteProjectById(String id) {
-
+        String sql = "Delete from project where projectId == ?";
+        jdbcTemplate.update(sql, id);
     }
 
     public class ProjectMapper implements RowMapper<Project> {
