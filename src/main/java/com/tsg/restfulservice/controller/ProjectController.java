@@ -43,7 +43,7 @@ public class ProjectController {
             projectDAO.addProject(project);
             return ResponseEntity.status(HttpStatus.CREATED).body("New Project created");
         } catch (Exception ex) {
-            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).body("Failed to add project");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add project");
         }
     }
 
