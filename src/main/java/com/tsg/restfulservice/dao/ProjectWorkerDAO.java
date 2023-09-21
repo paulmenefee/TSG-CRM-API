@@ -14,7 +14,9 @@ import java.util.List;
 @CrossOrigin
 public interface ProjectWorkerDAO {
 
-    ProjectWorker addProjectWorker(ProjectWorker projectWorker);
+    void addProjectWorker(ProjectWorker projectWorker);
 
-    void deleteProjectWorker(String projectId, int workerId);
+    ProjectWorker getProjectWorker(String ProjectId, int projectId);
+
+    void deleteProjectWorker(ProjectWorker projectWorker);
 }

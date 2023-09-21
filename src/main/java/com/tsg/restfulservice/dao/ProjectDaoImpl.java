@@ -19,8 +19,6 @@ public class ProjectDaoImpl implements ProjectDAO {
     @Override
     public Project addProject(Project project) {
         // ProjectId must NOT contain any spaces.
-        System.out.println("Date " + project.getDueDate());
-
         Project checkedProject = project.CheckProjectID(project);
         String sql = "insert into " +
                 "Project(ProjectId, ProjectName, ClientId, ProjectSummary, ProjectDueDate, ProjectIsActive) " +
@@ -29,7 +27,6 @@ public class ProjectDaoImpl implements ProjectDAO {
         jdbcTemplate.update(sql, checkedProject.getProjectId(), checkedProject.getProjectName(),
                 checkedProject.getClientId(), checkedProject.getSummary(),
                 checkedProject.getDueDate(), checkedProject.isActive());
-        System.out.println("Date " + checkedProject.getDueDate());
         return checkedProject;
     }
 
