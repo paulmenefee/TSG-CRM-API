@@ -29,11 +29,11 @@ public class ProjectController {
 
     @GetMapping("/project/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable String id) {
-        Project project = projectDAO.getProjectById(id);
-        if(project != null) {
-            return new ResponseEntity(project, HttpStatus.OK);
-        } else {
+        List<Project> project = projectDAO.getProjectById(id);
+        if(project.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(project, HttpStatus.OK);
         }
     }
 

@@ -10,7 +10,7 @@ public interface WorkerDAO {
 
     List<Worker> getAllWorkers();
 
-    Worker getWorkerById(int id);
+    List<Worker> getWorkerById(int id);
 
     Worker updateWorkerById(int id, Worker worker);
 

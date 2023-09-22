@@ -30,11 +30,11 @@ public class TaskController {
 
     @GetMapping("/task/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable int id) {
-        Task task = taskDAO.getTaskById(id);
-        if(task != null) {
-            return new ResponseEntity(task, HttpStatus.OK);
-        } else {
+        List<Task> task = taskDAO.getTaskById(id);
+        if(task.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(task, HttpStatus.OK);
         }
     }
 

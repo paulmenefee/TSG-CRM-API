@@ -34,14 +34,11 @@ public class ProjectWorkerController {
 
     @GetMapping("/project/{projectId}/worker/{workerId}")
     public ResponseEntity<List<ProjectWorker>> getProjectWorker(@PathVariable String projectId, @PathVariable int workerId) {
-        try {
-            List<ProjectWorker> projectWorker = projectWorkerDAO.getProjectWorker(projectId, workerId);
+        List<ProjectWorker> projectWorker = projectWorkerDAO.getProjectWorker(projectId, workerId);
+        if (projectWorker.isEmpty()) {
+            return new ResponseEntity(projectWorker, HttpStatus.NOT_FOUND);
+        } else {
             return new ResponseEntity(projectWorker, HttpStatus.OK);
-        } catch (EmptyResultDataAccessException ex) {
-            ProjectWorker exProjectWorker = new ProjectWorker();
-            exProjectWorker.setProjectId("Not Found");
-            exProjectWorker.setWorkerId(0);
-            return new ResponseEntity(exProjectWorker, HttpStatus.NOT_FOUND);
         }
     }
 

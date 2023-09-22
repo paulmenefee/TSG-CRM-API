@@ -47,9 +47,9 @@ public class WorkerDaoImpl implements WorkerDAO {
     }
 
     @Override
-    public Worker getWorkerById(int id) {
+    public List<Worker> getWorkerById(int id) {
         String sql = "select * from worker where workerId = ?";
-        Worker worker = jdbcTemplate.queryForObject(sql, new WorkerMapper(), id);
+        List<Worker> worker = jdbcTemplate.query(sql, new WorkerMapper(), id);
         return worker;
     }
 

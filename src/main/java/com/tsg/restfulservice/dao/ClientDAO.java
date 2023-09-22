@@ -11,7 +11,7 @@ public interface ClientDAO {
 
     List<Client> getAllClients();
 
-    Client getClientById(int id);
+    List<Client> getClientById(int id);
 
     Client updateClientById(int id, Client client);
 

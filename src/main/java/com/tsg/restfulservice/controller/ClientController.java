@@ -30,11 +30,11 @@ public class ClientController {
 
     @GetMapping("/client/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable int id) {
-        try {
-            Client client = clientDAO.getClientById(id);
-            return new ResponseEntity(client, HttpStatus.OK);
-        } catch (EmptyResultDataAccessException ex) {
+        List<Client> client = clientDAO.getClientById(id);
+        if(client.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(client, HttpStatus.OK);
         }
     }
 

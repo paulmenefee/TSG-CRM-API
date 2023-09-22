@@ -56,9 +56,9 @@ public class ClientDaoImpl implements ClientDAO {
     }
 
     @Override
-    public Client getClientById(int id) {
+    public List<Client> getClientById(int id) {
         String sql = "select * from client where clientId = ?";
-        Client client = jdbcTemplate.queryForObject(sql, new ClientMapper(), id);
+        List<Client> client = jdbcTemplate.query(sql, new ClientMapper(), id);
         return client;
     }
 

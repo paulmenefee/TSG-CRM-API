@@ -10,7 +10,7 @@ public interface ProjectDAO {
 
     List<Project> getAllProjects();
 
-    Project getProjectById(String id);
+    List<Project> getProjectById(String id);
 
     Project updateProjectById(String id, Project project);
 

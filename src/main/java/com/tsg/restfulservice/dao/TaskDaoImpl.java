@@ -91,9 +91,9 @@ public class TaskDaoImpl implements TaskDAO {
     }
 
     @Override
-    public Task getTaskById(int id) {
+    public List<Task> getTaskById(int id) {
         String sql = "Select * from task where taskId = ?";
-        Task task = jdbcTemplate.queryForObject(sql, new TaskMapper(), id);
+        List<Task> task = jdbcTemplate.query(sql, new TaskMapper(), id);
         return task;
     }
 

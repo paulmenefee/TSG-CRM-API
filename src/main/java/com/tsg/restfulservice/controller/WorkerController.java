@@ -28,11 +28,11 @@ public class WorkerController {
 
     @GetMapping("/worker/{id}")
     public ResponseEntity<Worker> getWorkerById(@PathVariable int id) {
-        Worker worker = workerDAO.getWorkerById(id);
-        if(worker != null) {
-            return new ResponseEntity(worker, HttpStatus.OK);
-        } else {
+        List<Worker> worker = workerDAO.getWorkerById(id);
+        if(worker.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(worker, HttpStatus.OK);
         }
     }
 

@@ -38,9 +38,9 @@ public class ProjectDaoImpl implements ProjectDAO {
     }
 
     @Override
-    public Project getProjectById(String id) {
+    public List<Project> getProjectById(String id) {
         String sql = "Select * from project where projectId = ?";
-        Project project = jdbcTemplate.queryForObject(sql, new ProjectMapper(), id);
+        List<Project> project = jdbcTemplate.query(sql, new ProjectMapper(), id);
         return project;
     }
 

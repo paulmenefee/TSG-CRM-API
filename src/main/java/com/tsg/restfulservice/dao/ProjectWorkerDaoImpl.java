@@ -17,8 +17,6 @@ public class ProjectWorkerDaoImpl implements ProjectWorkerDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    ProjectWorkerDaoImpl() {};
-
     @Override
     public void addProjectWorker(ProjectWorker projectWorker) {
         String sql = "Insert into projectWorker(projectId, workerId) " +
@@ -35,14 +33,14 @@ public class ProjectWorkerDaoImpl implements ProjectWorkerDAO {
 
     @Override
     public List<ProjectWorker> getProjectWorker(String projectId, int workerId) {
-        String sql = "Select * from projectworker where projectId = ? and workerId = ?";
+        String sql = "Select * from projectWorker where projectId = ? and workerId = ?";
         List<ProjectWorker> projectWorker = jdbcTemplate.query(sql, new ProjectWorkerMapper(), projectId, workerId);
         return projectWorker;
     }
 
     @Override
     public void deleteProjectWorker(ProjectWorker projectWorker) {
-        String sql = "Delete from projectworker where projectId = ? and workerId = ?";
+        String sql = "Delete from projectWorker where projectId = ? and workerId = ?";
         jdbcTemplate.update(sql, projectWorker.getProjectId(), projectWorker.getWorkerId());
     }
 
