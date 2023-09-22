@@ -78,7 +78,6 @@ public class TaskDaoImpl implements TaskDAO {
                 return statement;
             }, keyHolder);
         }
-
         task.setTaskId(keyHolder.getKey().intValue());
         UpdateEstimatedHours();
         return task;
@@ -112,6 +111,7 @@ public class TaskDaoImpl implements TaskDAO {
                 task.getWorkerId(), task.getTaskTypeId(),
                 task.getTaskStatusId(), task.getTaskParentId(),
                 task.getTaskId());
+        UpdateEstimatedHours();
         return task;
     }
 
@@ -119,6 +119,7 @@ public class TaskDaoImpl implements TaskDAO {
     public void deleteTaskById(int id) {
         String sql = "Delete from task where taskId = ?";
         jdbcTemplate.update(sql, id);
+        UpdateEstimatedHours();
     }
 
     // Helper function to sum estimated hours for sub tasks
