@@ -40,12 +40,12 @@ public class TaskController {
 
     @PostMapping("/task")
     public ResponseEntity<String> addTask(@RequestBody Task task) {
-        //try {
+        try {
             taskDAO.addTask(task);
             return ResponseEntity.status(HttpStatus.CREATED).body("New task created");
-        //} catch (Exception ex) {
-            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add task");
-        //}
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add task");
+        }
     }
 
     @DeleteMapping("/task/{id}")
