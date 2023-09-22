@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tsg")
 @CrossOrigin
@@ -31,9 +33,9 @@ public class ProjectWorkerController {
     }
 
     @GetMapping("/project/{projectId}/worker/{workerId}")
-    public ResponseEntity<ProjectWorker> getProjectWorker(@PathVariable String projectId, @PathVariable int workerId) {
+    public ResponseEntity<List<ProjectWorker>> getProjectWorker(@PathVariable String projectId, @PathVariable int workerId) {
         try {
-            ProjectWorker projectWorker = projectWorkerDAO.getProjectWorker(projectId, workerId);
+            List<ProjectWorker> projectWorker = projectWorkerDAO.getProjectWorker(projectId, workerId);
             return new ResponseEntity(projectWorker, HttpStatus.OK);
         } catch (EmptyResultDataAccessException ex) {
             ProjectWorker exProjectWorker = new ProjectWorker();

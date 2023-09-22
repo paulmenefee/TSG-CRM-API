@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class ProjectWorkerDaoImpl implements ProjectWorkerDAO {
@@ -16,6 +17,8 @@ public class ProjectWorkerDaoImpl implements ProjectWorkerDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    ProjectWorkerDaoImpl() {};
+
     @Override
     public void addProjectWorker(ProjectWorker projectWorker) {
         String sql = "Insert into projectWorker(projectId, workerId) " +
@@ -24,9 +27,16 @@ public class ProjectWorkerDaoImpl implements ProjectWorkerDAO {
     }
 
     @Override
-    public ProjectWorker getProjectWorker(String projectId, int workertId) {
+    public void addProjectWorker(String ProjectId, int workerId) {
+        String sql = "Insert into projectWorker(projectId, workerId) " +
+                "values (?, ?)";
+        jdbcTemplate.update(sql, ProjectId, workerId);
+    }
+
+    @Override
+    public List<ProjectWorker> getProjectWorker(String projectId, int workerId) {
         String sql = "Select * from projectworker where projectId = ? and workerId = ?";
-        ProjectWorker projectWorker = jdbcTemplate.queryForObject(sql, new ProjectWorkerMapper(), projectId, workertId);
+        List<ProjectWorker> projectWorker = jdbcTemplate.query(sql, new ProjectWorkerMapper(), projectId, workerId);
         return projectWorker;
     }
 

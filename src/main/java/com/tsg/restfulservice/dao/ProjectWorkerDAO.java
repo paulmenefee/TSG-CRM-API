@@ -15,8 +15,9 @@ import java.util.List;
 public interface ProjectWorkerDAO {
 
     void addProjectWorker(ProjectWorker projectWorker);
+    void addProjectWorker(String ProjectId, int workerId);
 
-    ProjectWorker getProjectWorker(String ProjectId, int projectId);
+    List<ProjectWorker> getProjectWorker(String ProjectId, int workerId);
 
     void deleteProjectWorker(ProjectWorker projectWorker);
 }

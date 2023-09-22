@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -39,12 +40,12 @@ public class TaskController {
 
     @PostMapping("/task")
     public ResponseEntity<String> addTask(@RequestBody Task task) {
-        try {
+        //try {
             taskDAO.addTask(task);
             return ResponseEntity.status(HttpStatus.CREATED).body("New task created");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add task");
-        }
+        //} catch (Exception ex) {
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add task");
+        //}
     }
 
     @DeleteMapping("/task/{id}")
@@ -53,7 +54,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body("Task " + id + " deleted");
     }
 
-    @PutMapping("/tasl/{id}")
+    @PutMapping("/task/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody Task task) {
         Task updatedTask = taskDAO.updateTaskById(id, task);
         return new ResponseEntity(updatedTask, HttpStatus.OK);

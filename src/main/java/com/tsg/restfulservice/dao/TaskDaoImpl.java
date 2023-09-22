@@ -19,43 +19,67 @@ public class TaskDaoImpl implements TaskDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //*****************  Notes *******************
-    // Need to add a projectId and workerId to ProjectWorker table
-    // Add a ProjectWorker class to app
-    // The current addTask is equal to adding a subTask
-    //********************************************
-
     @Override
     public Task addTask(Task task) {
+        // Need to add project worker data to ProjectWorker table if it exists
+        ProjectWorkerDaoImpl projectWorker = new ProjectWorkerDaoImpl(jdbcTemplate);
+        String projectId = task.getProjectId();
+        int workerId = task.getWorkerId();
 
-//        String projectId = task.getProjectId();
-//        int workerId = task.getWorkerId();
-//        addWorkerToProject(projectId, workerId);
+        List<ProjectWorker> pwCheck = projectWorker.getProjectWorker(projectId, workerId);
+        if (pwCheck.isEmpty()) {
+            projectWorker.addProjectWorker(projectId, workerId);
+        }
 
-        String sql = "INSERT INTO " +
+        // SQL strings for inserting parent tasks and subtasks
+        String sqlSubTask = "INSERT INTO " +
                 "Task(TaskTitle, TaskDetails, " +
                 "TaskDueDate, TaskEstimatedHours, " +
                 "ProjectId, WorkerId, " +
                 "TaskTypeId, TaskStatusId, ParentTaskId) " +
                 "VALUES(?,?,?,?,?,?,?,?,?)";
+
+        String sqlParentTask = "INSERT INTO " +
+                "Task(TaskTitle, TaskDetails, " +
+                "TaskDueDate, TaskEstimatedHours, " +
+                "ProjectId, WorkerId, " +
+                "TaskTypeId, TaskStatusId) " +
+                "VALUES(?,?,?,?,?,?,?,?)";
+
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update((Connection conn) -> {
-            PreparedStatement statement = conn.prepareStatement(
-                    sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, task.getTaskTitle());
-            statement.setString(2, task.getTaskDetails());
-            statement.setDate(3, Date.valueOf(task.getTaskDueDate()));
-            statement.setFloat(4, task.getTaskEstimatedHours());
-            statement.setString(5, task.getProjectId());
-            statement.setInt(6, task.getWorkerId());
-            statement.setInt(7, task.getTaskTypeId());
-            statement.setInt(8,task.getTaskStatusId());
-            statement.setInt(9,task.getTaskParentId());
-            return statement;
-        }, keyHolder);
-        task.setTaskId(keyHolder.getKey().intValue());
+        if(task.getTaskParentId() <= 0) {   // parent task
+            jdbcTemplate.update((Connection conn) -> {
+                PreparedStatement statement = conn.prepareStatement(
+                        sqlParentTask, Statement.RETURN_GENERATED_KEYS);
+                statement.setString(1, task.getTaskTitle());
+                statement.setString(2, task.getTaskDetails());
+                statement.setDate(3, Date.valueOf(task.getTaskDueDate()));
+                statement.setFloat(4, task.getTaskEstimatedHours());
+                statement.setString(5, task.getProjectId());
+                statement.setInt(6, task.getWorkerId());
+                statement.setInt(7, task.getTaskTypeId());
+                statement.setInt(8,task.getTaskStatusId());
+                return statement;
+            }, keyHolder);
+        } else {
+            jdbcTemplate.update((Connection conn) -> {
+                PreparedStatement statement = conn.prepareStatement(
+                        sqlSubTask, Statement.RETURN_GENERATED_KEYS);
+                statement.setString(1, task.getTaskTitle());
+                statement.setString(2, task.getTaskDetails());
+                statement.setDate(3, Date.valueOf(task.getTaskDueDate()));
+                statement.setFloat(4, task.getTaskEstimatedHours());
+                statement.setString(5, task.getProjectId());
+                statement.setInt(6, task.getWorkerId());
+                statement.setInt(7, task.getTaskTypeId());
+                statement.setInt(8,task.getTaskStatusId());
+                statement.setInt(9,task.getTaskParentId());
+                return statement;
+            }, keyHolder);
+        }
 
+        task.setTaskId(keyHolder.getKey().intValue());
         return task;
     }
 
@@ -114,4 +138,6 @@ public class TaskDaoImpl implements TaskDAO {
             return task;
         }
     }
+
+
 }
