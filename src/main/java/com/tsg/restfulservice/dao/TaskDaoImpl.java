@@ -80,6 +80,7 @@ public class TaskDaoImpl implements TaskDAO {
         }
 
         task.setTaskId(keyHolder.getKey().intValue());
+        UpdateEstimatedHours();
         return task;
     }
 
@@ -119,6 +120,22 @@ public class TaskDaoImpl implements TaskDAO {
         String sql = "Delete from task where taskId = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    // Helper function to sum estimated hours for sub tasks
+    public void UpdateEstimatedHours() {
+        String sql = "update task as t1 " +
+                "join (" +
+                " Select parentTaskId, sum(TaskEstimatedHours) as TotalHours " +
+                "    from task " +
+                "    where ParentTaskId is not null " +
+                "    group by ParentTaskId " +
+                ") as t2 on t1.taskId = t2.parentTaskId " +
+                "Set t1.TaskEstimatedHours = t2.TotalHours " +
+                "where t1.parentTaskId is null;";
+        jdbcTemplate.update(sql);
+    }
+
+
 
     public class TaskMapper implements RowMapper<Task> {
 
