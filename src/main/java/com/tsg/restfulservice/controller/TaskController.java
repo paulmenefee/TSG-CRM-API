@@ -59,4 +59,16 @@ public class TaskController {
         Task updatedTask = taskDAO.updateTaskById(id, task);
         return new ResponseEntity(updatedTask, HttpStatus.OK);
     }
+
+    //Reporting urls
+    @GetMapping("/totalhours/{id}")
+    public ResponseEntity<Task> getTotalHours(@PathVariable String id) {
+        float task = taskDAO.GetTotalHoursByProject(id);
+        if(task == 0) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(task, HttpStatus.OK);
+        }
+    }
+
 }

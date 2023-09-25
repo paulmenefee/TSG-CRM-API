@@ -16,4 +16,8 @@ public interface TaskDAO {
     Task updateTaskById(int id, Task task);
 
     void deleteTaskById(int id);
+
+    //Reporting totals
+
+    public float GetTotalHoursByProject(String projectId);
 }

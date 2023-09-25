@@ -1,9 +1,9 @@
 package com.tsg.restfulservice.dao;
 
+import com.tsg.restfulservice.dao.mappers.Mappers;
 import com.tsg.restfulservice.model.ProjectWorker;
 import com.tsg.restfulservice.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -86,14 +86,14 @@ public class TaskDaoImpl implements TaskDAO {
     @Override
     public List<Task> getAllTasks() {
         String sql = "Select * from task";
-        List<Task> taskList = jdbcTemplate.query(sql, new TaskMapper());
+        List<Task> taskList = jdbcTemplate.query(sql, new Mappers.TaskMapper());
         return taskList;
     }
 
     @Override
     public List<Task> getTaskById(int id) {
         String sql = "Select * from task where taskId = ?";
-        List<Task> task = jdbcTemplate.query(sql, new TaskMapper(), id);
+        List<Task> task = jdbcTemplate.query(sql, new Mappers.TaskMapper(), id);
         return task;
     }
 
@@ -136,26 +136,22 @@ public class TaskDaoImpl implements TaskDAO {
         jdbcTemplate.update(sql);
     }
 
+    @Override
+    public float GetTotalHoursByProject(String projectId) {
+        String sql = "select p.projectId, TotalHours " +
+                "from project p " +
+                "join projectWorker pw on p.ProjectId = pw.ProjectId " +
+                "join (" +
+                    "select projectId, sum(TaskEstimatedHours) as TotalHours " +
+                    "from task " +
+                    "where ParentTaskId is null " +
+                    "group by projectId " +
+                    ") as t on pw.ProjectId = t.ProjectId " +
+                "where p.projectId = ? " +
+                "group by p.ProjectId;";
 
-
-    public class TaskMapper implements RowMapper<Task> {
-
-        @Override
-        public Task mapRow(ResultSet rs, int index) throws SQLException {
-            Task task = new Task();
-            task.setTaskId(rs.getInt("TaskId"));
-            task.setTaskTitle(rs.getString("TaskTitle"));
-            task.setTaskDetails(rs.getString("TaskDetails"));
-            task.setTaskDueDate(rs.getDate("TaskDueDate").toLocalDate());
-            task.setTaskEstimatedHours(rs.getFloat("TaskEstimatedHours"));
-            task.setProjectId(rs.getString("ProjectId"));
-            task.setWorkerId(rs.getInt("WorkerId"));
-            task.setTaskTypeId(rs.getInt("TaskTypeId"));
-            task.setTaskStatusId(rs.getInt("TaskStatusId"));
-            task.setTaskParentId(rs.getInt("ParentTaskId"));
-            return task;
-        }
+        float totalHours = jdbcTemplate.queryForObject(sql, new Mappers.TotalHoursMapper(), projectId);
+        return totalHours;
     }
-
 
 }
