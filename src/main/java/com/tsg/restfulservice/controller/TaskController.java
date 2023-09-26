@@ -81,5 +81,23 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/task/resolved/{id}")
+    public ResponseEntity<List<Task>> resolvedTasks(@PathVariable String id) {
+        List<Task> currentTasks = taskDAO.getResolvedTasks(id);
+        if(currentTasks.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(currentTasks, HttpStatus.OK);
+        }
+    }
 
+    @GetMapping("/task/unresolved/{id}")
+    public ResponseEntity<List<Task>> currentTasks(@PathVariable String id) {
+        List<Task> currentTasks = taskDAO.getUnresolvedTasks(id);
+        if(currentTasks.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(currentTasks, HttpStatus.OK);
+        }
+    }
 }

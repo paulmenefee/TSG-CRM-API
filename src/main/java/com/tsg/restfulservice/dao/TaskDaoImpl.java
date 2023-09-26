@@ -165,6 +165,21 @@ public class TaskDaoImpl implements TaskDAO {
         return currentTasks;
     }
 
+    public List<Task> getResolvedTasks(String projectId) {
+        String sql = "Select * " +
+                "from task " +
+                "where TaskStatusId in(5, 6, 7, 8) and " +
+                "projectId = ?";
+        List<Task> taskList = jdbcTemplate.query(sql, new Mappers.TaskMapper(), projectId);
+        return taskList;
+    }
 
-
+    public List<Task> getUnresolvedTasks(String projectId) {
+        String sql = "Select * " +
+                "from task " +
+                "where TaskStatusId in(1, 2, 3, 4) and " +
+                "projectId = ?";
+        List<Task> taskList = jdbcTemplate.query(sql, new Mappers.TaskMapper(), projectId);
+        return taskList;
+    }
 }
