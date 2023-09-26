@@ -1,6 +1,7 @@
 package com.tsg.restfulservice.dao;
 
 import com.tsg.restfulservice.dao.mappers.Mappers;
+import com.tsg.restfulservice.model.Project;
 import com.tsg.restfulservice.model.ProjectWorker;
 import com.tsg.restfulservice.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -153,5 +154,17 @@ public class TaskDaoImpl implements TaskDAO {
         float totalHours = jdbcTemplate.queryForObject(sql, new Mappers.TotalHoursMapper(), projectId);
         return totalHours;
     }
+
+    @Override
+    public List<Task> getCurrentTasksForWorker(int workerId) {
+        //Current tasks for selected worker
+        String sql = "Select * " +
+                "from task " +
+                "where TaskStatusId in(1,2,3,4) and workerId = ?;";
+        List<Task> currentTasks = jdbcTemplate.query(sql, new Mappers.CurrentTasksMapper(), workerId);
+        return currentTasks;
+    }
+
+
 
 }

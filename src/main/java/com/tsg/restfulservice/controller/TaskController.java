@@ -60,7 +60,7 @@ public class TaskController {
         return new ResponseEntity(updatedTask, HttpStatus.OK);
     }
 
-    //Reporting urls
+    // ********** Reporting urls **********
     @GetMapping("/totalhours/{id}")
     public ResponseEntity<Task> getTotalHours(@PathVariable String id) {
         float task = taskDAO.GetTotalHoursByProject(id);
@@ -70,5 +70,16 @@ public class TaskController {
             return new ResponseEntity(task, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/currenttasks/{id}")
+    public ResponseEntity<List<Task>> currentTasks(@PathVariable int id) {
+        List<Task> currentTasks = taskDAO.getCurrentTasksForWorker(id);
+        if(currentTasks.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(currentTasks, HttpStatus.OK);
+        }
+    }
+
 
 }

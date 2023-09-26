@@ -17,6 +17,25 @@ public class Mappers {
         }
     }
 
+    public static class CurrentTasksMapper implements RowMapper<Task> {
+
+        @Override
+        public Task mapRow(ResultSet rs, int index) throws SQLException {
+            Task task = new Task();
+            task.setTaskId(rs.getInt("TaskId"));
+            task.setTaskTitle(rs.getString("TaskTitle"));
+            task.setTaskDetails(rs.getString("TaskDetails"));
+            task.setTaskDueDate(rs.getDate("TaskDueDate").toLocalDate());
+            task.setTaskEstimatedHours(rs.getFloat("TaskEstimatedHours"));
+            task.setProjectId(rs.getString("ProjectId"));
+            task.setWorkerId(rs.getInt("WorkerId"));
+            task.setTaskTypeId(rs.getInt("TaskTypeId"));
+            task.setTaskStatusId(rs.getInt("TaskStatusId"));
+            task.setTaskParentId(rs.getInt("ParentTaskId"));
+            return task;
+        }
+    }
+
     public static class TaskMapper implements RowMapper<Task> {
 
         @Override
@@ -35,4 +54,5 @@ public class Mappers {
             return task;
         }
     }
+
 }

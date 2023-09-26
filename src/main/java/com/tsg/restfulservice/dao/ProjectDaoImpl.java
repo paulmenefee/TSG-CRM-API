@@ -65,7 +65,15 @@ public class ProjectDaoImpl implements ProjectDAO {
         jdbcTemplate.update(sql, id);
     }
 
-    public class ProjectMapper implements RowMapper<Project> {
+    @Override
+    public List<Project> getProjectsByClient(int id) {
+        String sql = "Select * from project where clientId = ?";
+        List<Project> projectList = jdbcTemplate.query(sql, new ProjectDaoImpl.ProjectMapper(), id);
+        return projectList;
+    }
+
+
+    public static class ProjectMapper implements RowMapper<Project> {
 
         @Override
         public Project mapRow(ResultSet rs, int index) throws SQLException {

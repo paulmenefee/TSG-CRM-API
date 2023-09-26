@@ -15,4 +15,8 @@ public interface ProjectDAO {
     Project updateProjectById(String id, Project project);
 
     void deleteProjectById(String id);
+
+    // reporting urls
+
+    List<Project> getProjectsByClient(int id);
 }

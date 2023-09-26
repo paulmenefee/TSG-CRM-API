@@ -20,4 +20,9 @@ public interface TaskDAO {
     //Reporting totals
 
     public float GetTotalHoursByProject(String projectId);
+
+    List<Task> getCurrentTasksForWorker(int workerId);
+
+
+
 }

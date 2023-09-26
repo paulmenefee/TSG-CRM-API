@@ -58,4 +58,14 @@ public class ProjectController {
         Project updatedProject = projectDAO.updateProjectById(id, project);
         return new ResponseEntity(updatedProject, HttpStatus.OK);
     }
+
+    @GetMapping("/client/projects/{id}")
+    public ResponseEntity<List<Project>> getProjectsByClient(@PathVariable int id) {
+        List<Project> project = projectDAO.getProjectsByClient(id);
+        if(project.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(project, HttpStatus.OK);
+        }
+    }
 }
