@@ -5,6 +5,7 @@ import com.tsg.restfulservice.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,6 +57,16 @@ public class WorkerController {
     public ResponseEntity<Worker> updateWorker(@PathVariable int id, @RequestBody Worker worker) {
         Worker updatedWorker = workerDAO.updateWorkerById(id, worker);
         return new ResponseEntity(updatedWorker, HttpStatus.OK);
+    }
+
+    @GetMapping("/worker/project/{projectId}")
+    public ResponseEntity<List<Worker>> getWorkerByProject(@PathVariable String projectId) {
+        List<Worker> workerList = workerDAO.getWorkerByProject(projectId);
+        if(workerList.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(workerList, HttpStatus.OK);
+        }
     }
 
 }

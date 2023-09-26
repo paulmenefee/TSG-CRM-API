@@ -15,4 +15,6 @@ public interface WorkerDAO {
     Worker updateWorkerById(int id, Worker worker);
 
     void deleteWorkerById(int id);
+
+    List<Worker> getWorkerByProject(String projectId);
 }

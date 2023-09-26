@@ -72,6 +72,16 @@ public class WorkerDaoImpl implements WorkerDAO {
         jdbcTemplate.update(sql, id);
     }
 
+    @Override
+    public List<Worker> getWorkerByProject(String projectId) {
+        String sql = "SELECT * " +
+                "FROM worker w " +
+                "join projectWorker pw on pw.WorkerId = w.WorkerId " +
+                "where projectId = ?";
+        List<Worker> workerList = jdbcTemplate.query(sql, new WorkerMapper(), projectId);
+        return workerList;
+    }
+
     public class WorkerMapper implements RowMapper<Worker> {
 
         @Override

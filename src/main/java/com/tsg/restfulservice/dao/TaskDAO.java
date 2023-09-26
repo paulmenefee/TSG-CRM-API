@@ -23,6 +23,8 @@ public interface TaskDAO {
 
     List<Task> getCurrentTasksForWorker(int workerId);
 
+    List<Task> getResolvedTasks(String projectId);
 
+    List<Task> getUnresolvedTasks(String projectId);
 
 }
