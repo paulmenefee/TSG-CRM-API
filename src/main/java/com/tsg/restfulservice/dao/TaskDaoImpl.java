@@ -1,7 +1,6 @@
 package com.tsg.restfulservice.dao;
 
 import com.tsg.restfulservice.dao.mappers.Mappers;
-import com.tsg.restfulservice.model.Project;
 import com.tsg.restfulservice.model.ProjectWorker;
 import com.tsg.restfulservice.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
