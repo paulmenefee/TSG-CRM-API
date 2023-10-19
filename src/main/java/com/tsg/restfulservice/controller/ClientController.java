@@ -39,15 +39,15 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-    public ResponseEntity<String> addClient(@RequestBody Client client) {
+    public ResponseEntity<Client> addClient(@RequestBody Client client) {
         clientDAO.addClient(client);
-        return ResponseEntity.status(HttpStatus.CREATED).body("New Client: " + client.getClientId() + " added");
+        return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 
     @DeleteMapping("/client/{id}")
-    public ResponseEntity<String> removeClient(@PathVariable int id) {
+    public ResponseEntity<Void> removeClient(@PathVariable int id) {
         clientDAO.deleteClientById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Client: " + id + " deleted");
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/client/{id}")
