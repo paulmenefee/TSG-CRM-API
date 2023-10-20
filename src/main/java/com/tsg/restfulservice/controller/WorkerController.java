@@ -37,19 +37,15 @@ public class WorkerController {
     }
 
     @PostMapping("/worker")
-    public ResponseEntity<String> addWorker(@RequestBody Worker worker) {
-        try {
-            workerDAO.addWorker(worker);
-            return ResponseEntity.status(HttpStatus.CREATED).body("New Worker added");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add worker");
-        }
+    public ResponseEntity<Worker> addWorker(@RequestBody Worker worker) {
+        workerDAO.addWorker(worker);
+        return ResponseEntity.status(HttpStatus.CREATED).body(worker);
     }
 
     @DeleteMapping("/worker/{id}")
-    public ResponseEntity<String> deleteWorker(@PathVariable int id) {
+    public ResponseEntity<Void> deleteWorker(@PathVariable int id) {
         workerDAO.deleteWorkerById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Worker " + id + " deleted");
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/worker/{id}")
