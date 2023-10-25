@@ -1,13 +1,14 @@
 package com.tsg.restfulservice.model;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;  //changed to java.util.Date because of error reading localdate
+import java.util.Date;
 
 public class Project {
     private String projectId;
     private String projectName;
     private int clientId;
     private String Summary;
-    private LocalDate dueDate;
+    private Date dueDate;
     private boolean isActive;
 
     public String getProjectId() {
@@ -42,11 +43,11 @@ public class Project {
         Summary = summary;
     }
 
-    public LocalDate getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 

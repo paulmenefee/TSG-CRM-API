@@ -1,6 +1,7 @@
 package com.tsg.restfulservice.model;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Task {
     private int taskId;

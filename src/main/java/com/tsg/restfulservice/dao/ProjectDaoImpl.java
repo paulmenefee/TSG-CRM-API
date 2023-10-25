@@ -82,7 +82,7 @@ public class ProjectDaoImpl implements ProjectDAO {
             project.setProjectName(rs.getString("ProjectName"));
             project.setClientId(rs.getInt("ClientId"));
             project.setSummary(rs.getString("ProjectSummary"));
-            project.setDueDate(rs.getDate("ProjectDueDate").toLocalDate());
+            project.setDueDate(rs.getDate("ProjectDueDate"));
             project.setActive(rs.getBoolean("ProjectIsActive"));
             return project;
         }

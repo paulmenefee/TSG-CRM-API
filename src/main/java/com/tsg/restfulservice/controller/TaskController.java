@@ -37,19 +37,19 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<String> addTask(@RequestBody Task task) {
+    public ResponseEntity<Task> addTask(@RequestBody Task task) {
         try {
             taskDAO.addTask(task);
-            return ResponseEntity.status(HttpStatus.CREATED).body("New task created");
+            return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add task");
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/task/{id}")
-    public ResponseEntity<String> deleteProject(@PathVariable int id) {
+    public ResponseEntity<Void> deleteProject(@PathVariable int id) {
         taskDAO.deleteTaskById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Task " + id + " deleted");
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/task/{id}")

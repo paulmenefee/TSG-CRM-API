@@ -38,19 +38,19 @@ public class ProjectController {
     }
 
     @PostMapping("/project")
-    public ResponseEntity<String> addProject(@RequestBody Project project) {
+    public ResponseEntity<Project> addProject(@RequestBody Project project) {
         try {
             projectDAO.addProject(project);
-            return ResponseEntity.status(HttpStatus.CREATED).body("New Project created");
+            return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add project");
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/project/{id}")
-    public ResponseEntity<String> deleteProject(@PathVariable String id) {
+    public ResponseEntity<Void> deleteProject(@PathVariable String id) {
         projectDAO.deleteProjectById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Project: " + id + " deleted");
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/project/{id}")
