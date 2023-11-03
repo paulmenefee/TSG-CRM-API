@@ -1,5 +1,7 @@
 package com.tsg.restfulservice.dao;
 
+import com.tsg.restfulservice.dao.mappers.Mappers;
+import com.tsg.restfulservice.model.ClientProject;
 import com.tsg.restfulservice.model.Project;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -69,6 +71,15 @@ public class ProjectDaoImpl implements ProjectDAO {
     public List<Project> getProjectsByClient(int id) {
         String sql = "Select * from project where clientId = ?";
         List<Project> projectList = jdbcTemplate.query(sql, new ProjectDaoImpl.ProjectMapper(), id);
+        return projectList;
+    }
+
+    @Override
+    public List<ClientProject> getClientProjects() {
+        String sql = "select c.clientId, clientName, projectId, ProjectDueDate " +
+                "from client c " +
+                "join project p on c.clientId = p.clientId;";
+        List<ClientProject> projectList = jdbcTemplate.query(sql, new Mappers.ClientProjectMapper());
         return projectList;
     }
 

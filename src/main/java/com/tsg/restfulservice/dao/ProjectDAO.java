@@ -1,5 +1,6 @@
 package com.tsg.restfulservice.dao;
 
+import com.tsg.restfulservice.model.ClientProject;
 import com.tsg.restfulservice.model.Project;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface ProjectDAO {
     // reporting urls
 
     List<Project> getProjectsByClient(int id);
+    List<ClientProject> getClientProjects();
 }

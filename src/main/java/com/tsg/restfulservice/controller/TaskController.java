@@ -1,6 +1,7 @@
 package com.tsg.restfulservice.controller;
 
 import com.tsg.restfulservice.dao.TaskDAO;
+import com.tsg.restfulservice.model.ProjectHours;
 import com.tsg.restfulservice.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,6 +70,15 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/project/totalhours")
+    public ResponseEntity<List<ProjectHours>> getTotalHours() {
+        List<ProjectHours> projectHours = taskDAO.GetProjectTotalHours();
+        if(projectHours.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(projectHours, HttpStatus.OK);
+        }
+    }
     @GetMapping("/currenttasks/{id}")
     public ResponseEntity<List<Task>> currentTasks(@PathVariable int id) {
         List<Task> currentTasks = taskDAO.getCurrentTasksForWorker(id);

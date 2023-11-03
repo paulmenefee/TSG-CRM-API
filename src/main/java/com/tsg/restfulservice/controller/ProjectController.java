@@ -1,6 +1,7 @@
 package com.tsg.restfulservice.controller;
 
 import com.tsg.restfulservice.dao.ProjectDAO;
+import com.tsg.restfulservice.model.ClientProject;
 import com.tsg.restfulservice.model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,4 +69,15 @@ public class ProjectController {
             return new ResponseEntity(project, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/client/projects")
+    public ResponseEntity<List<ClientProject>> getClientProjects() {
+        List<ClientProject> clientProjects = projectDAO.getClientProjects();
+        if(clientProjects.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(clientProjects, HttpStatus.OK);
+        }
+    }
+
 }

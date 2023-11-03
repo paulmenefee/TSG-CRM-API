@@ -1,6 +1,8 @@
 package com.tsg.restfulservice.dao;
 
 import com.tsg.restfulservice.dao.mappers.Mappers;
+import com.tsg.restfulservice.model.Project;
+import com.tsg.restfulservice.model.ProjectHours;
 import com.tsg.restfulservice.model.ProjectWorker;
 import com.tsg.restfulservice.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -91,6 +93,22 @@ public class TaskDaoImpl implements TaskDAO {
     }
 
     @Override
+    public List<Task> getTaskList() {
+        String sql = "select " +
+                "taskId, taskTitle, taskdetails, taskDueDate, TaskEstimatedHours, ProjectId, " +
+                "    w.workerFirstName, w.workerLastName, " +
+                "    tt.TaskTypeName as taskType, " +
+                "    ts.TaskStatusName as taskStatus, " +
+                "    t.ParentTaskId " +
+                "from task t " +
+                "join worker w on t.workerId = w.WorkerId " +
+                "join tasktype tt on t.TaskTypeId = tt.TaskTypeId " +
+                "join taskstatus ts on t.TaskStatusId = ts.TaskStatusId;";
+        List<Task> taskList = jdbcTemplate.query(sql, new Mappers.TaskMapper2());
+        return taskList;
+    }
+
+    @Override
     public List<Task> getTaskById(int id) {
         String sql = "Select * from task where taskId = ?";
         List<Task> task = jdbcTemplate.query(sql, new Mappers.TaskMapper(), id);
@@ -103,15 +121,16 @@ public class TaskDaoImpl implements TaskDAO {
                 "TaskDetails = ?, TaskDueDate = ?, " +
                 "TaskEstimatedHours = ?, ProjectId = ?, " +
                 "WorkerId = ?, TaskTypeId = ?, " +
-                "TaskStatusId = ?, ParentTaskId = ? " +
+                "TaskStatusId = ? " +
                 "Where taskId = ?";
+        System.out.println(sql);
         jdbcTemplate.update(sql, task.getTaskId(), task.getTaskTitle(),
                 task.getTaskDetails(), task.getTaskDueDate(),
                 task.getTaskEstimatedHours(), task.getProjectId(),
                 task.getWorkerId(), task.getTaskTypeId(),
-                task.getTaskStatusId(), task.getTaskParentId(),
+                task.getTaskStatusId(),
                 task.getTaskId());
-        UpdateEstimatedHours();
+        //UpdateEstimatedHours();
         return task;
     }
 
@@ -152,6 +171,23 @@ public class TaskDaoImpl implements TaskDAO {
 
         float totalHours = jdbcTemplate.queryForObject(sql, new Mappers.TotalHoursMapper(), projectId);
         return totalHours;
+    }
+
+    @Override
+    public List<ProjectHours> GetProjectTotalHours() {
+        String sql = "select p.projectId, TotalHours " +
+                "from project p " +
+                "join projectWorker pw on p.ProjectId = pw.ProjectId " +
+                "join (" +
+                "select projectId, sum(TaskEstimatedHours) as TotalHours " +
+                "from task " +
+                "where ParentTaskId is null " +
+                "group by projectId " +
+                ") as t on pw.ProjectId = t.ProjectId " +
+                "group by p.ProjectId;";
+
+        List<ProjectHours> totalHoursList = jdbcTemplate.query(sql, new Mappers.ProjectHoursMapper());
+        return totalHoursList;
     }
 
     @Override

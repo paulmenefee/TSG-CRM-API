@@ -42,10 +42,8 @@ public class ProjectWorkerController {
     }
 
     @DeleteMapping("/projectworker")
-    public ResponseEntity<String> deleteProjectWorker(@RequestBody ProjectWorker projectWorker) {
+    public ResponseEntity<Void> deleteProjectWorker(@RequestBody ProjectWorker projectWorker) {
         projectWorkerDAO.deleteProjectWorker(projectWorker);
-        return ResponseEntity.status(HttpStatus.OK).body
-                ("WorkerID: " + projectWorker.getWorkerId() +
-                        " deleted from projectID: " + projectWorker.getProjectId());
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

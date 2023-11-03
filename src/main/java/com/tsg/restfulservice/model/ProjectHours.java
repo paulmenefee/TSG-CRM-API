@@ -1,8 +1,9 @@
 package com.tsg.restfulservice.model;
 
-public class ProjectWorker {
+public class ProjectHours {
+
     private String projectId;
-    private int workerId;
+    private float totalHours;
 
     public String getProjectId() {
         return projectId;
@@ -12,11 +13,11 @@ public class ProjectWorker {
         this.projectId = projectId;
     }
 
-    public int getWorkerId() {
-        return workerId;
+    public float getTotalHours() {
+        return totalHours;
     }
 
-    public void setWorkerId(int workerId) {
-        this.workerId = workerId;
+    public void setTotalHours(float totalHours) {
+        this.totalHours = totalHours;
     }
 }
