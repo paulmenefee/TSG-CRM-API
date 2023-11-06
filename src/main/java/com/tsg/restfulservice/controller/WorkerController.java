@@ -2,6 +2,7 @@ package com.tsg.restfulservice.controller;
 
 import com.tsg.restfulservice.dao.WorkerDAO;
 import com.tsg.restfulservice.model.Worker;
+import com.tsg.restfulservice.model.WorkerByProject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,16 @@ public class WorkerController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity(workerList, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/project/workers")
+    public ResponseEntity<List<WorkerByProject>> getWorkersByProject() {
+        List<WorkerByProject> workerByProjectList = workerDAO.projectWorkerList();
+        if(workerByProjectList.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(workerByProjectList, HttpStatus.OK);
         }
     }
 

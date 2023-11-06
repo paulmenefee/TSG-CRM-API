@@ -100,4 +100,18 @@ public class Mappers {
         }
     }
 
+    public static class WorkerByProjectMapper implements RowMapper<WorkerByProject> {
+
+        @Override
+        public WorkerByProject mapRow(ResultSet rs, int index) throws SQLException {
+            WorkerByProject projectWorkers = new WorkerByProject();
+            projectWorkers.setProjectId(rs.getString("projectId"));
+            projectWorkers.setFirstName(rs.getString("workerFirstName"));
+            projectWorkers.setLastName(rs.getString("workerLastName"));
+            projectWorkers.setEmail(rs.getString("workerEmail"));
+
+            return projectWorkers;
+        }
+    }
+
 }

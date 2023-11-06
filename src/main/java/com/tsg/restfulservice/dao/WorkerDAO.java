@@ -1,6 +1,7 @@
 package com.tsg.restfulservice.dao;
 
 import com.tsg.restfulservice.model.Worker;
+import com.tsg.restfulservice.model.WorkerByProject;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface WorkerDAO {
     void deleteWorkerById(int id);
 
     List<Worker> getWorkerByProject(String projectId);
+
+    List<WorkerByProject> projectWorkerList();
 }

@@ -1,6 +1,8 @@
 package com.tsg.restfulservice.dao;
 
+import com.tsg.restfulservice.dao.mappers.Mappers;
 import com.tsg.restfulservice.model.Worker;
+import com.tsg.restfulservice.model.WorkerByProject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -80,6 +82,17 @@ public class WorkerDaoImpl implements WorkerDAO {
                 "where projectId = ?";
         List<Worker> workerList = jdbcTemplate.query(sql, new WorkerMapper(), projectId);
         return workerList;
+    }
+
+    @Override
+    public List<WorkerByProject> projectWorkerList() {
+        String sql = "select p.projectId, w.workerFirstName, w.workerLastname, w.workerEmail " +
+                "from project p " +
+                "join projectWorker pw on p.projectId = pw.projectId " +
+                "join worker w on pw.workerId = w.workerId;";
+        List<WorkerByProject> workersByProject = jdbcTemplate.query(sql, new Mappers.WorkerByProjectMapper());
+
+        return workersByProject;
     }
 
     public class WorkerMapper implements RowMapper<Worker> {
